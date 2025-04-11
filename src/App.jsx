@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import Contact from "./components/Contact";
 import Supabase from "./components/Supabase";
+import Create from "./components/Create";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -11,7 +12,7 @@ function App() {
   return (
     <>
       <div>
-        <Contact />
+        <Create />
         <Supabase />
       </div>
     </>
