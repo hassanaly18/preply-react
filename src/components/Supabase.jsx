@@ -1,8 +1,25 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../utils/supabase";
+import "../../public/Style/Form.css";
 
 const Supabase = () => {
   const [student, setstudent] = useState([]);
+  const [editingid, seteditingid] = useState(null);
+  const [Name, setName] = useState("");
+  const [Age, setAge] = useState("");
+  const [Email, setEmail] = useState("");
+
+  function namehandler(e) {
+    setName(e.target.value);
+  }
+
+  function agehandler(e) {
+    setAge(e.target.value);
+  }
+
+  function Emailhandler(e) {
+    setEmail(e.target.value);
+  }
   useEffect(() => {
     fetchstudents();
   }, []);
@@ -30,7 +47,31 @@ const Supabase = () => {
     }
     fetchstudents();
   }
-
+  //handle edit
+  const handleupdate = (student) => {
+    setName(student.name); //fill
+    setAge(student.age); //
+    setEmail(student.email);
+    seteditingid(student.id);
+  };
+  async function handlesubmit(e) {
+    e.preventDefault();
+    if (editingid) {
+      const { error } = await supabase
+        .from("students")
+        .update({ name: Name, email: Email, age: Age })
+        .eq("id", editingid);
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("student updated successfully");
+      }
+      setAge("");
+      setEmail("");
+      setName("");
+      fetchstudents();
+    }
+  }
   return (
     <div>
       {/* {student.map((allele) => (
@@ -50,6 +91,7 @@ const Supabase = () => {
             <th>Email</th>
             <th>Age</th>
             <th>DeleteRow</th>
+            <th>UpdateRow</th>
           </tr>
         </thead>
         <tbody>
@@ -68,10 +110,42 @@ const Supabase = () => {
                   Delete
                 </button>
               </td>
+              <td>
+                <button
+                  onClick={() => {
+                    handleupdate(student);
+                  }}
+                >
+                  Update
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div>
+        <form action="">
+          <input
+            type="text"
+            placeholder="Name"
+            value={Name}
+            onChange={namehandler}
+          />
+          <input
+            type="text"
+            placeholder="Emai"
+            value={Email}
+            onChange={Emailhandler}
+          />
+          <input
+            type="number"
+            placeholder="Age"
+            value={Age}
+            onChange={agehandler}
+          />
+          <button onClick={handlesubmit}>Update Student</button>
+        </form>
+      </div>
     </div>
   );
 };
