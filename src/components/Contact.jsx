@@ -6,6 +6,7 @@ const Contact = () => {
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [clear, setclear] = useState("");
 
   const service_id = "service_jn23it8";
   const template_id = "template_ksbrgkc";

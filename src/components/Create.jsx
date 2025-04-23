@@ -5,6 +5,7 @@ const Create = () => {
   const [Name, setName] = useState("");
   const [Age, setAge] = useState("");
   const [Email, setEmail] = useState("");
+  const [clear, setclear] = useState("");
 
   async function handlersubmit(e) {
     e.preventDefault();
@@ -20,12 +21,13 @@ const Create = () => {
     } else {
       alert("data inserted successflly");
     }
-
+  }
+  function clearform(e) {
+    e.preventDefault();
     setAge("");
     setEmail("");
     setName("");
   }
-
   function namehandler(e) {
     setName(e.target.value);
   }
@@ -59,6 +61,7 @@ const Create = () => {
           onChange={agehandler}
         />
         <button onClick={handlersubmit}>Add Student</button>
+        <button onClick={clearform}>Clear Form</button>
       </form>
     </div>
   );

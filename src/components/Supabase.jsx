@@ -8,6 +8,7 @@ const Supabase = () => {
   const [Name, setName] = useState("");
   const [Age, setAge] = useState("");
   const [Email, setEmail] = useState("");
+  const [search, setsearch] = useState("");
 
   function namehandler(e) {
     setName(e.target.value);
@@ -19,6 +20,9 @@ const Supabase = () => {
 
   function Emailhandler(e) {
     setEmail(e.target.value);
+  }
+  function searchs(e) {
+    setsearch(e.target.value);
   }
   useEffect(() => {
     fetchstudents();
@@ -54,6 +58,7 @@ const Supabase = () => {
     setEmail(student.email);
     seteditingid(student.id);
   };
+
   async function handlesubmit(e) {
     e.preventDefault();
     if (editingid) {
@@ -69,8 +74,23 @@ const Supabase = () => {
       setAge("");
       setEmail("");
       setName("");
-      fetchstudents();
+      fetchstudents(); //updating tbale fetch
+      return;
     }
+    alert("kindly select a student");
+  }
+  const filteredStudents = student.filter((s) =>
+    s.name.toLowerCase().includes(search.toLowerCase())
+  );
+  ///smallest to large
+  function sortByAgeAsc() {
+    const sort = student.slice().sort((a, b) => a.age - b.age);
+    setstudent(sort);
+  }
+  //largest to smallest
+  function sortByAgeDesc() {
+    const sort = student.slice().sort((a, b) => b.age - a.age);
+    setstudent(sort);
   }
   return (
     <div>
@@ -82,7 +102,20 @@ const Supabase = () => {
         </div>
       ))} */}
       <button onClick={fetchstudents}>fetch</button>
+      <form action="">
+        <input
+          type="text"
+          placeholder="SEARCH"
+          onChange={searchs}
+          value={search}
+        />
+      </form>
+      {filteredStudents.map((allele) => (
+        <div>{allele.name}</div>
+      ))}
       <h3> Students List</h3>
+      <button onClick={sortByAgeAsc}>Sort by Age ↑</button>{" "}
+      <button onClick={sortByAgeDesc}>Sort by Age ↓</button>
       <table border="1" cellPadding="10">
         <thead style={{ backgroundColor: "black", color: "white" }}>
           <tr>
@@ -95,7 +128,7 @@ const Supabase = () => {
           </tr>
         </thead>
         <tbody>
-          {student.map((student) => (
+          {filteredStudents.map((student) => (
             <tr>
               <td>{student.id}</td>
               <td>{student.name}</td>
